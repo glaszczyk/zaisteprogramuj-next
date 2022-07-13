@@ -1,20 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="AutoImportSettings">
-    <option name="autoReloadType" value="SELECTIVE" />
-  </component>
   <component name="ChangeListManager">
-    <list default="true" id="640b7e0a-918f-4a11-820d-9761b59e9fe3" name="Changes" comment="" />
+    <list default="true" id="2cb7ee91-d177-457c-9e1d-7c628daf8560" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
+  <component name="HighlightingSettingsPerFile">
+    <setting file="file://$PROJECT_DIR$/pages/index.tsx" root0="FORCE_HIGHLIGHTING" />
+  </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.tslint": "(autodetect)"
+    "ts.external.directory.path": "\\\\wsl$\\Ubuntu\\home\\glaszczyk\\projects\\zaisteprogramuj-next\\node_modules\\typescript\\lib"
   }
 }]]></component>
   <component name="TaskManager">
