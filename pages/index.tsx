@@ -11,6 +11,34 @@ const DATA = {
   rating: 4.5,
 };
 
+interface RatingProps {
+  rating: number;
+}
+
+const Rating = ({ rating }: RatingProps) => {
+  return <p className="text-blue-600 font-bold">{rating}</p>;
+};
+
+interface ProductProps {
+  data: {
+    description: string;
+    thumbnailUrl: string;
+    thumbnailAlt: string;
+    rating: number;
+  };
+}
+
+const Product = ({ data }: ProductProps) => {
+  const { thumbnailAlt, thumbnailUrl, rating, description } = data;
+  return (
+    <>
+      <img src={thumbnailUrl} alt={thumbnailAlt} />
+      <p>{description}</p>
+      <Rating rating={rating} />
+    </>
+  );
+};
+
 const Home = () => {
   return (
     <div>
@@ -20,9 +48,7 @@ const Home = () => {
       <div className="flex flex-col min-h-screen max-w-4xl mx-auto">
         <Header />
         <main className="flex-grow p-6 grid md:grid-cols-2 gap-6">
-          <img src={DATA.thumbnailUrl} alt={DATA.thumbnailAlt} />
-          <p>{DATA.description}</p>
-          <p className="text-blue-600 font-bold">{DATA.rating}</p>
+          <Product data={DATA} />
         </main>
         <Footer />
       </div>
