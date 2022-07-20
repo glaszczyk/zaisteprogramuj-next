@@ -1,6 +1,8 @@
 import { Footer } from "../components/Footer";
 import { Header } from "../components/Header";
 import Head from "next/head";
+import { Product } from "../components/Product";
+import { Main } from "../components/Main";
 
 const DATA = {
   description: `Maecenas dapibus egestas lacus a ornare. Proin iaculis, lacus id pellentesque rutrum, lectus orci ultrices purus, eu rutrum turpis dui nec nibh. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Integer molestie ipsum mauris, nec
@@ -11,34 +13,6 @@ const DATA = {
   rating: 4.5,
 };
 
-interface RatingProps {
-  rating: number;
-}
-
-const Rating = ({ rating }: RatingProps) => {
-  return <p className="text-blue-600 font-bold">{rating}</p>;
-};
-
-interface ProductProps {
-  data: {
-    description: string;
-    thumbnailUrl: string;
-    thumbnailAlt: string;
-    rating: number;
-  };
-}
-
-const Product = ({ data }: ProductProps) => {
-  const { thumbnailAlt, thumbnailUrl, rating, description } = data;
-  return (
-    <>
-      <img src={thumbnailUrl} alt={thumbnailAlt} />
-      <p>{description}</p>
-      <Rating rating={rating} />
-    </>
-  );
-};
-
 const Home = () => {
   return (
     <div>
@@ -47,9 +21,9 @@ const Home = () => {
       </Head>
       <div className="flex flex-col min-h-screen max-w-4xl mx-auto">
         <Header />
-        <main className="flex-grow p-6 grid md:grid-cols-2 gap-6">
+        <Main>
           <Product data={DATA} />
-        </main>
+        </Main>
         <Footer />
       </div>
     </div>

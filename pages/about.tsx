@@ -1,6 +1,7 @@
 import { Header } from "../components/Header";
 import { Footer } from "../components/Footer";
 import Head from "next/head";
+import { Main } from "../components/Main";
 
 const About = () => {
   return (
@@ -10,9 +11,9 @@ const About = () => {
       </Head>
       <div className="flex flex-col min-h-screen max-w-4xl mx-auto">
         <Header />
-        <main className="flex-grow p-6 grid md:grid-cols-2 gap-6">
+        <Main>
           <p>Hello world!</p>
-        </main>
+        </Main>
         <Footer />
       </div>
     </div>
