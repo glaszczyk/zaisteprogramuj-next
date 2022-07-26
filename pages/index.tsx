@@ -13,7 +13,7 @@ const DATA = {
   rating: 4.5,
 };
 
-const Home = () => {
+const HomePage = () => {
   return (
     <div>
       <Head>
@@ -30,4 +30,4 @@ const Home = () => {
   );
 };
 
-export default Home;
+export default HomePage;

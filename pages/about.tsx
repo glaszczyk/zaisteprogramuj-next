@@ -3,7 +3,7 @@ import { Footer } from "../components/Footer";
 import Head from "next/head";
 import { Main } from "../components/Main";
 
-const About = () => {
+const AboutPage = () => {
   return (
     <div>
       <Head>
@@ -20,4 +20,4 @@ const About = () => {
   );
 };
 
-export default About;
+export default AboutPage;
