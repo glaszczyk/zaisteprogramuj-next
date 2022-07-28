@@ -1,4 +1,4 @@
-import { Product } from "../components/Product";
+import { ProductDetails } from "../components/Product";
 import { useQuery } from "react-query";
 
 export const getProducts = async () => {
@@ -19,7 +19,7 @@ const ProductsCSRPage = () => {
     <ul className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
       {result.data.map((product) => (
         <li key={product.id}>
-          <Product
+          <ProductDetails
             data={{
               title: product.title,
               description: product.description,
