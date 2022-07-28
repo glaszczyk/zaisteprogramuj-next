@@ -10,6 +10,7 @@ const ProductsPage = ({
         <li key={product.id}>
           <ProductListItem
             data={{
+              id: product.id,
               title: product.title,
               thumbnailAlt: product.title,
               thumbnailUrl: product.image,

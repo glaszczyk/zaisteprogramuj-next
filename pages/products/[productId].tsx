@@ -1,5 +1,6 @@
 import { InferGetStaticPropsType } from "next";
 import { ProductDetails } from "../../components/Product";
+import Link from "next/link";
 
 const ProductIdPage = ({
   data,
@@ -8,21 +9,27 @@ const ProductIdPage = ({
     return <div>Chyba mamy problem...</div>;
   }
   return (
-    <ProductDetails
-      data={{
-        description: data.description,
-        thumbnailAlt: data.title,
-        thumbnailUrl: data.image,
-        rating: data.rating.rate,
-        title: data.title,
-      }}
-    />
+    <div>
+      <Link href="/products">
+        <a className="font-bold">Wróć do listy produktów</a>
+      </Link>
+      <ProductDetails
+        data={{
+          id: data.id,
+          description: data.description,
+          thumbnailAlt: data.title,
+          thumbnailUrl: data.image,
+          rating: data.rating.rate,
+          title: data.title,
+        }}
+      />
+    </div>
   );
 };
 export default ProductIdPage;
 
 export const getStaticPaths = async () => {
-  const response = await fetch("http://fakestoreapi.com/products/");
+  const response = await fetch("https://fakestoreapi.com/products/");
   const json: StoreApiResponse[] = await response.json();
   const data = json.map((product) => {
     return { params: { productId: `${product.id}` } };

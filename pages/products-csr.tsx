@@ -21,6 +21,7 @@ const ProductsCSRPage = () => {
         <li key={product.id}>
           <ProductDetails
             data={{
+              id: product.id,
               title: product.title,
               description: product.description,
               thumbnailAlt: product.title,
