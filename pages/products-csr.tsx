@@ -1,5 +1,6 @@
 import { ProductDetails } from "../components/Product";
 import { useQuery } from "react-query";
+import { Pagination } from "../components/Pagination";
 
 export const getProducts = async () => {
   const response = await fetch("https://fakestoreapi.com/products");
@@ -16,22 +17,25 @@ const ProductsCSRPage = () => {
     return <div>Coś poszło nie tak...</div>;
   }
   return (
-    <ul className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-      {result.data.map((product) => (
-        <li key={product.id}>
-          <ProductDetails
-            data={{
-              id: product.id,
-              title: product.title,
-              description: product.description,
-              thumbnailAlt: product.title,
-              thumbnailUrl: product.image,
-              rating: product.rating.rate,
-            }}
-          />
-        </li>
-      ))}
-    </ul>
+    <div className="flex flex-col">
+      <Pagination />
+      <ul className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+        {result.data.map((product) => (
+          <li key={product.id}>
+            <ProductDetails
+              data={{
+                id: product.id,
+                title: product.title,
+                description: product.description,
+                thumbnailAlt: product.title,
+                thumbnailUrl: product.image,
+                rating: product.rating.rate,
+              }}
+            />
+          </li>
+        ))}
+      </ul>
+    </div>
   );
 };
 
