@@ -1,11 +1,17 @@
+import { FormEventHandler } from "react";
+
 interface PageProps {
   value: number;
   selected?: boolean;
+  renderType: PageRenderType;
+  onClick: FormEventHandler<HTMLButtonElement>;
 }
 
 interface GetPagination {
   allPages: number[];
   currentPage: number;
+  renderType: PageRenderType;
+  onClick: FormEventHandler<HTMLButtonElement>;
 }
 
 type PageItem =
@@ -18,20 +24,28 @@ type PageItem =
       type: "non-page";
     };
 
-const Page = ({ value, selected = false }: PageProps) => {
+const Page = ({ value, selected = false, renderType, onClick }: PageProps) => {
   const liClassNames = `w-14 h-14  ${
     selected ? "bg-blue-800" : "bg-gray-200"
   } ${selected ? "text-white" : "text-black"} rounded-md`;
-  return (
-    <li className={liClassNames}>
+  const pageElement =
+    renderType === "csr" ? (
+      <button
+        className="text-lg flex w-full h-full justify-center text-xl items-center"
+        onClick={onClick}
+      >
+        {value}
+      </button>
+    ) : (
       <a
         className="text-lg flex w-full h-full justify-center text-xl items-center"
         href="#"
       >
         {value}
       </a>
-    </li>
-  );
+    );
+
+  return <li className={liClassNames}>{pageElement}</li>;
 };
 
 const NonPage = () => {
@@ -121,24 +135,49 @@ const paginate = (allPages: number[], currentPage: number): PageItem[] => {
   ];
 };
 
-const getPagination = ({ allPages, currentPage }: GetPagination) => {
+const getPagination = ({
+  allPages,
+  currentPage,
+  renderType,
+  onClick,
+}: GetPagination) => {
   const pagination = paginate(allPages, currentPage);
   return pagination.map((page, idx) =>
     page.type === "page" ? (
-      <Page key={`page-${idx}`} value={page.value} selected={page.selected} />
+      <Page
+        key={`page-${idx}`}
+        value={page.value}
+        selected={page.selected}
+        onClick={onClick}
+        renderType={renderType}
+      />
     ) : (
       <NonPage key={`non-page-${idx}`} />
     )
   );
 };
 
-export const Pagination = () => {
-  const pagesCount = 9;
-  const allPages = new Array(pagesCount).fill(null).map((_, i) => i + 1);
-  const currentPage = 6;
+type PageRenderType = "csr" | "ssg";
+
+interface PaginationProps {
+  totalPages: number;
+  current: number;
+  renderType: PageRenderType;
+  onClick?: FormEventHandler<HTMLButtonElement>;
+}
+
+export const Pagination = ({
+  current,
+  totalPages,
+  renderType,
+  onClick = () => null,
+}: PaginationProps) => {
+  const allPages = new Array(totalPages).fill(null).map((_, i) => i + 1);
   return (
     <nav className="py-4">
-      <ul className="flex gap-3">{getPagination({ allPages, currentPage })}</ul>
+      <ul className="flex gap-3">
+        {getPagination({ allPages, currentPage: current, renderType, onClick })}
+      </ul>
     </nav>
   );
 };

@@ -1,15 +1,20 @@
 import { ProductDetails } from "../components/Product";
 import { useQuery } from "react-query";
 import { Pagination } from "../components/Pagination";
+import { useState } from "react";
+
+const PRODUCTS_API_URL = " https://naszsklep-api.vercel.app/api/products";
 
 export const getProducts = async () => {
-  const response = await fetch("https://fakestoreapi.com/products");
+  const response = await fetch(PRODUCTS_API_URL);
   const data: StoreApiResponse[] = await response.json();
   return data;
 };
 
 const ProductsCSRPage = () => {
   const result = useQuery("products", getProducts);
+  const [currentPage, setCurrentPage] = useState(1);
+
   if (result.isLoading) {
     return <div>Loading...</div>;
   }
@@ -18,7 +23,14 @@ const ProductsCSRPage = () => {
   }
   return (
     <div className="flex flex-col">
-      <Pagination />
+      <Pagination
+        totalPages={10}
+        current={currentPage}
+        onClick={(event) =>
+          setCurrentPage(parseInt(event.currentTarget.innerText))
+        }
+        renderType="csr"
+      />
       <ul className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
         {result.data.map((product) => (
           <li key={product.id}>
