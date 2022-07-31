@@ -1,17 +1,15 @@
-import { FormEventHandler } from "react";
-
 interface PageProps {
   value: number;
   selected?: boolean;
   renderType: PageRenderType;
-  onClick: FormEventHandler<HTMLButtonElement>;
+  onClick: (page: number) => void;
 }
 
 interface GetPagination {
   allPages: number[];
   currentPage: number;
   renderType: PageRenderType;
-  onClick: FormEventHandler<HTMLButtonElement>;
+  onClick: (page: number) => void;
 }
 
 type PageItem =
@@ -28,11 +26,12 @@ const Page = ({ value, selected = false, renderType, onClick }: PageProps) => {
   const liClassNames = `w-14 h-14  ${
     selected ? "bg-blue-800" : "bg-gray-200"
   } ${selected ? "text-white" : "text-black"} rounded-md`;
+
   const pageElement =
     renderType === "csr" ? (
       <button
         className="text-lg flex w-full h-full justify-center text-xl items-center"
-        onClick={onClick}
+        onClick={(event) => onClick(parseInt(event.currentTarget.innerText))}
       >
         {value}
       </button>
@@ -163,7 +162,7 @@ interface PaginationProps {
   totalPages: number;
   current: number;
   renderType: PageRenderType;
-  onClick?: FormEventHandler<HTMLButtonElement>;
+  onClick: (page: number) => void;
 }
 
 export const Pagination = ({

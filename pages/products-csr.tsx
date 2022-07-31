@@ -3,17 +3,22 @@ import { useQuery } from "react-query";
 import { Pagination } from "../components/Pagination";
 import { useState } from "react";
 
-const PRODUCTS_API_URL = " https://naszsklep-api.vercel.app/api/products";
+const PRODUCTS_API_URL = "https://naszsklep-api.vercel.app/api/products";
 
-export const getProducts = async () => {
-  const response = await fetch(PRODUCTS_API_URL);
+export const getProducts = async (currentPage: number) => {
+  const productsPerPage = 25;
+  const offset = (currentPage - 1) * productsPerPage;
+  const products = `${PRODUCTS_API_URL}?take=${productsPerPage}&offset=${offset}`;
+  const response = await fetch(`${products}`);
   const data: StoreApiResponse[] = await response.json();
   return data;
 };
 
 const ProductsCSRPage = () => {
-  const result = useQuery("products", getProducts);
   const [currentPage, setCurrentPage] = useState(1);
+  const result = useQuery(["products", currentPage], () =>
+    getProducts(currentPage)
+  );
 
   if (result.isLoading) {
     return <div>Loading...</div>;
@@ -26,9 +31,7 @@ const ProductsCSRPage = () => {
       <Pagination
         totalPages={10}
         current={currentPage}
-        onClick={(event) =>
-          setCurrentPage(parseInt(event.currentTarget.innerText))
-        }
+        onClick={(page) => setCurrentPage(page)}
         renderType="csr"
       />
       <ul className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
