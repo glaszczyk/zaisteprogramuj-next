@@ -5,9 +5,9 @@ import { useState } from "react";
 
 const PRODUCTS_API_URL = "https://naszsklep-api.vercel.app/api/products";
 
-export const getProducts = async (currentPage: number) => {
+export const getProducts = async (currentPage: string) => {
   const productsPerPage = 25;
-  const offset = (currentPage - 1) * productsPerPage;
+  const offset = (parseInt(currentPage) - 1) * productsPerPage;
   const products = `${PRODUCTS_API_URL}?take=${productsPerPage}&offset=${offset}`;
   const response = await fetch(`${products}`);
   const data: StoreApiResponse[] = await response.json();
@@ -15,7 +15,7 @@ export const getProducts = async (currentPage: number) => {
 };
 
 const ProductsCSRPage = () => {
-  const [currentPage, setCurrentPage] = useState(1);
+  const [currentPage, setCurrentPage] = useState("1");
   const result = useQuery(["products", currentPage], () =>
     getProducts(currentPage)
   );

@@ -1,15 +1,17 @@
+import Link from "next/link";
+
 interface PageProps {
   value: number;
   selected?: boolean;
   renderType: PageRenderType;
-  onClick: (page: number) => void;
+  onClick: (page: string) => void;
 }
 
 interface GetPagination {
   allPages: number[];
   currentPage: number;
   renderType: PageRenderType;
-  onClick: (page: number) => void;
+  onClick: (page: string) => void;
 }
 
 type PageItem =
@@ -31,17 +33,19 @@ const Page = ({ value, selected = false, renderType, onClick }: PageProps) => {
     renderType === "csr" ? (
       <button
         className="text-lg flex w-full h-full justify-center text-xl items-center"
-        onClick={(event) => onClick(parseInt(event.currentTarget.innerText))}
+        onClick={(event) => onClick(event.currentTarget.innerText)}
       >
         {value}
       </button>
     ) : (
-      <a
-        className="text-lg flex w-full h-full justify-center text-xl items-center"
-        href="#"
-      >
-        {value}
-      </a>
+      <Link href={`/new-products/${value}`}>
+        <a
+          className="text-lg flex w-full h-full justify-center text-xl items-center"
+          href="#"
+        >
+          {value}
+        </a>
+      </Link>
     );
 
   return <li className={liClassNames}>{pageElement}</li>;
@@ -160,9 +164,9 @@ type PageRenderType = "csr" | "ssg";
 
 interface PaginationProps {
   totalPages: number;
-  current: number;
+  current: string;
   renderType: PageRenderType;
-  onClick: (page: number) => void;
+  onClick?: (page: string) => void;
 }
 
 export const Pagination = ({
@@ -172,10 +176,11 @@ export const Pagination = ({
   onClick = () => null,
 }: PaginationProps) => {
   const allPages = new Array(totalPages).fill(null).map((_, i) => i + 1);
+  const currentPage = parseInt(current);
   return (
     <nav className="py-4">
       <ul className="flex gap-3">
-        {getPagination({ allPages, currentPage: current, renderType, onClick })}
+        {getPagination({ allPages, currentPage, renderType, onClick })}
       </ul>
     </nav>
   );
