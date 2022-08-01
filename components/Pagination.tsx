@@ -4,14 +4,12 @@ interface PageProps {
   value: number;
   selected?: boolean;
   renderType: PageRenderType;
-  onClick: (page: string) => void;
 }
 
 interface GetPagination {
   allPages: number[];
   currentPage: number;
   renderType: PageRenderType;
-  onClick: (page: string) => void;
 }
 
 type PageItem =
@@ -24,30 +22,24 @@ type PageItem =
       type: "non-page";
     };
 
-const Page = ({ value, selected = false, renderType, onClick }: PageProps) => {
+const Page = ({ value, selected = false, renderType }: PageProps) => {
+  const pathFragment =
+    renderType === "csr" ? "/products-csr?page=" : "/new-products/";
   const liClassNames = `w-14 h-14  ${
     selected ? "bg-blue-800" : "bg-gray-200"
   } ${selected ? "text-white" : "text-black"} rounded-md`;
 
-  const pageElement =
-    renderType === "csr" ? (
-      <button
-        className="text-lg flex w-full h-full justify-center text-xl items-center"
-        onClick={(event) => onClick(event.currentTarget.innerText)}
-      >
+  const pageElement = selected ? (
+    <span className="text-lg flex w-full h-full justify-center text-xl items-center">
+      {value}
+    </span>
+  ) : (
+    <Link href={`${pathFragment}${value}`}>
+      <a className="text-lg flex w-full h-full justify-center text-xl items-center">
         {value}
-      </button>
-    ) : (
-      <Link href={`/new-products/${value}`}>
-        <a
-          className="text-lg flex w-full h-full justify-center text-xl items-center"
-          href="#"
-        >
-          {value}
-        </a>
-      </Link>
-    );
-
+      </a>
+    </Link>
+  );
   return <li className={liClassNames}>{pageElement}</li>;
 };
 
@@ -142,7 +134,6 @@ const getPagination = ({
   allPages,
   currentPage,
   renderType,
-  onClick,
 }: GetPagination) => {
   const pagination = paginate(allPages, currentPage);
   return pagination.map((page, idx) =>
@@ -151,7 +142,6 @@ const getPagination = ({
         key={`page-${idx}`}
         value={page.value}
         selected={page.selected}
-        onClick={onClick}
         renderType={renderType}
       />
     ) : (
@@ -166,21 +156,19 @@ interface PaginationProps {
   totalPages: number;
   current: string;
   renderType: PageRenderType;
-  onClick?: (page: string) => void;
 }
 
 export const Pagination = ({
-  current,
+  current = "1",
   totalPages,
   renderType,
-  onClick = () => null,
 }: PaginationProps) => {
   const allPages = new Array(totalPages).fill(null).map((_, i) => i + 1);
   const currentPage = parseInt(current);
   return (
     <nav className="py-4">
       <ul className="flex gap-3">
-        {getPagination({ allPages, currentPage, renderType, onClick })}
+        {getPagination({ allPages, currentPage, renderType })}
       </ul>
     </nav>
   );

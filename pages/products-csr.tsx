@@ -1,7 +1,7 @@
 import { ProductDetails } from "../components/Product";
 import { useQuery } from "react-query";
 import { Pagination } from "../components/Pagination";
-import { useState } from "react";
+import { useRouter } from "next/router";
 
 const PRODUCTS_API_URL = "https://naszsklep-api.vercel.app/api/products";
 
@@ -15,7 +15,9 @@ export const getProducts = async (currentPage: string) => {
 };
 
 const ProductsCSRPage = () => {
-  const [currentPage, setCurrentPage] = useState("1");
+  const router = useRouter();
+  const { page } = router.query;
+  const currentPage = typeof page !== "string" ? "1" : page;
   const result = useQuery(["products", currentPage], () =>
     getProducts(currentPage)
   );
@@ -28,12 +30,7 @@ const ProductsCSRPage = () => {
   }
   return (
     <div className="flex flex-col">
-      <Pagination
-        totalPages={10}
-        current={currentPage}
-        onClick={(page) => setCurrentPage(page)}
-        renderType="csr"
-      />
+      <Pagination totalPages={10} current={currentPage} renderType="csr" />
       <ul className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
         {result.data.map((product) => (
           <li key={product.id}>
