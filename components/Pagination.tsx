@@ -25,9 +25,9 @@ type PageItem =
 const Page = ({ value, selected = false, renderType }: PageProps) => {
   const pathFragment =
     renderType === "csr" ? "/products-csr?page=" : "/new-products/";
-  const liClassNames = `w-14 h-14  ${
+  const liClassNames = `w-14 h-14 rounded-md ${
     selected ? "bg-blue-800" : "bg-gray-200"
-  } ${selected ? "text-white" : "text-black"} rounded-md`;
+  } ${selected ? "text-white" : "text-black"} `;
 
   const pageElement = selected ? (
     <span className="text-lg flex w-full h-full justify-center text-xl items-center">
