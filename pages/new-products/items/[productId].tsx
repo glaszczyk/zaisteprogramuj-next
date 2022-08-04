@@ -4,6 +4,7 @@ import { Header } from "../../../components/Header";
 import { Main } from "../../../components/Main";
 import { Footer } from "../../../components/Footer";
 import { ProductDetails } from "../../../components/Product";
+import { useRouter } from "next/router";
 
 const getProductDetails = (data: ProductsApiResponse) => {
   const { id, title, longDescription, rating, image } = data;
@@ -20,6 +21,7 @@ const getProductDetails = (data: ProductsApiResponse) => {
 const ProductIdPage = ({
   data,
 }: InferGetStaticPropsType<typeof getStaticProps>) => {
+  const router = useRouter();
   if (!data) {
     return <div>Coś jest nie tak. Przepraszam</div>;
   }
@@ -32,7 +34,7 @@ const ProductIdPage = ({
         <Header />
         <Main>
           <button
-            onClick={() => null}
+            onClick={() => router.back()}
             className="w-100 h-14 px-4 bg-blue-800 text-white rounded-md"
           >
             Wróć do listy produktów
@@ -61,8 +63,10 @@ export const getProducts = async (currentPage: string) => {
 };
 
 export const getStaticPaths = async () => {
-  const totalPages = 10;
-  const allPagesCount = new Array(totalPages).fill(null).map((_, i) => i + 1);
+  const prerenderedPagesCount = 3;
+  const allPagesCount = new Array(prerenderedPagesCount)
+    .fill(null)
+    .map((_, i) => i + 1);
   const allProductsByPage = await Promise.all(
     allPagesCount.map(async (page) => await getProducts(`${page}`))
   );
@@ -77,7 +81,7 @@ export const getStaticPaths = async () => {
 
   return {
     paths,
-    fallback: false,
+    fallback: "blocking",
   };
 };
 

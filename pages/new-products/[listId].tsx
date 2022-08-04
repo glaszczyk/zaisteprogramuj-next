@@ -53,8 +53,10 @@ const ListIdPage = ({
 export default ListIdPage;
 
 export const getStaticPaths = async () => {
-  const totalPages = 10;
-  const allPages = new Array(totalPages).fill(null).map((_, i) => i + 1);
+  const prerenderedPagesCount = 3;
+  const allPages = new Array(prerenderedPagesCount)
+    .fill(null)
+    .map((_, i) => i + 1);
   const paths = allPages.map((page) => ({
     params: {
       listId: `${page}`,
@@ -62,7 +64,7 @@ export const getStaticPaths = async () => {
   }));
   return {
     paths,
-    fallback: false, // can also be true or 'blocking'
+    fallback: "blocking",
   };
 };
 
