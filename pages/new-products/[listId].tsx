@@ -2,6 +2,10 @@ import { ProductListItem } from "../../components/Product";
 import { InferGetStaticPropsType } from "next";
 import { useRouter } from "next/router";
 import { Pagination } from "../../components/Pagination";
+import Head from "next/head";
+import { Header } from "../../components/Header";
+import { Main } from "../../components/Main";
+import { Footer } from "../../components/Footer";
 
 const PRODUCTS_API_URL = "https://naszsklep-api.vercel.app/api/products";
 
@@ -15,22 +19,33 @@ const ListIdPage = ({
     return <p>Coś nie załadowało się poprawnie...</p>;
   }
   return (
-    <div className="flex flex-col">
-      <Pagination totalPages={10} current={listId} renderType="ssg" />
-      <ul className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-        {data.map((product) => (
-          <li key={product.id}>
-            <ProductListItem
-              data={{
-                id: product.id,
-                title: product.title,
-                thumbnailAlt: product.title,
-                thumbnailUrl: product.image,
-              }}
-            />
-          </li>
-        ))}
-      </ul>
+    <div>
+      <Head>
+        <title>Products via CSR</title>
+      </Head>
+      <div className="flex flex-col min-h-screen max-w-4xl mx-auto">
+        <Header />
+        <Main>
+          <div className="flex flex-col">
+            <Pagination totalPages={10} current={listId} renderType="ssg" />
+            <ul className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+              {data.map((product) => (
+                <li key={product.id}>
+                  <ProductListItem
+                    data={{
+                      id: product.id,
+                      title: product.title,
+                      thumbnailAlt: product.title,
+                      thumbnailUrl: product.image,
+                    }}
+                  />
+                </li>
+              ))}
+            </ul>
+          </div>
+        </Main>
+        <Footer />
+      </div>
     </div>
   );
 };
@@ -62,8 +77,8 @@ export const getStaticProps = async ({
     };
   }
   const offset = (parseInt(params.listId) - 1) * productsPerPage;
-  const products = `${PRODUCTS_API_URL}?take=${productsPerPage}&offset=${offset}`;
-  const response = await fetch(`${products}`);
+  const productsUrl = `${PRODUCTS_API_URL}?take=${productsPerPage}&offset=${offset}`;
+  const response = await fetch(`${productsUrl}`);
   const data: ProductsApiResponse[] = await response.json();
   return {
     props: { data },

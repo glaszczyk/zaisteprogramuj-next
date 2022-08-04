@@ -67,7 +67,7 @@ export const ProductListItem = ({ data }: ProductListItemProps) => {
   return (
     <div className="p-5 border-2 border-gray-300 bg-white shadow-lg h-full">
       <img src={thumbnailUrl} alt={thumbnailAlt} />
-      <Link href={`/products/${id}`}>
+      <Link href={`/new-products/items/${id}`}>
         <a>
           <h2 className="font-bold text-2xl mt-4 mb-2">{title}</h2>
         </a>
