@@ -5,7 +5,7 @@ import Head from "next/head";
 import { Header } from "../components/Header";
 import { Main } from "../components/Main";
 import { Footer } from "../components/Footer";
-import { ProductCsrDetails } from "../components/ProductCsr";
+import { ProductCsrDetails } from "../components/Product";
 
 const PRODUCTS_API_URL = "https://naszsklep-api.vercel.app/api/products";
 
@@ -80,7 +80,7 @@ const ProductsCSRPage = () => {
 
 export default ProductsCSRPage;
 
-interface ProductsApiResponse {
+export interface ProductsApiResponse {
   id: number;
   title: string;
   price: number;

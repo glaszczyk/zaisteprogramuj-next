@@ -35,6 +35,24 @@ export const ProductDetails = ({ data }: ProductProps) => {
   );
 };
 
+export const ProductCsrDetails = ({ data }: ProductProps) => {
+  const { id, thumbnailAlt, thumbnailUrl, rating, description, title } = data;
+  return (
+    <div className="p-6 border-2 border-gray-300 bg-white shadow-lg h-full ">
+      <img
+        className="object-scale-down aspect-square w-fit h-auto"
+        src={thumbnailUrl}
+        alt={thumbnailAlt}
+      />
+      <Link href={`\product-csr?product=${id}`}>
+        <h2 className="font-bold text-2xl mt-4 mb-2">{title}</h2>
+      </Link>
+      <p>{description}</p>
+      <Rating rating={rating} />
+    </div>
+  );
+};
+
 interface ProductListItemProps {
   data: ProductListItem;
 }

@@ -5,6 +5,7 @@ import { Header } from "../components/Header";
 import { Main } from "../components/Main";
 import { Footer } from "../components/Footer";
 import { ProductDetails } from "../components/Product";
+import { ProductsApiResponse } from "./products-csr";
 
 const getProduct = async (product: string) => {
   const response = await fetch(
@@ -66,17 +67,4 @@ const ProductCSRPage = () => {
   );
 };
 
-interface ProductsApiResponse {
-  id: number;
-  title: string;
-  price: number;
-  description: string;
-  category: string;
-  image: string;
-  longDescription: string;
-  rating: {
-    rate: number;
-    count: number;
-  };
-}
 export default ProductCSRPage;
