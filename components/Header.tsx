@@ -10,6 +10,9 @@ export const Header = () => {
         <Link href="/about">
           <a className="px-2">About</a>
         </Link>
+        <Link href="/products">
+          <a className="px-2">Fake Store Products</a>
+        </Link>
         <Link href="/products-csr?page=1">
           <a className="px-2">CSR Products</a>
         </Link>

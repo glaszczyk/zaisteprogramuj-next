@@ -1,6 +1,7 @@
 import { InferGetStaticPropsType } from "next";
 import Head from "next/head";
 import { useRouter } from "next/router";
+
 import { Pagination } from "../../components/Pagination";
 import { ProductListItem } from "../../components/Product";
 import { Header } from "../../components/Header";
@@ -23,13 +24,15 @@ const ListIdPage = ({
   const router = useRouter();
   const { listId } = router.query;
 
+  const productsPath = "/new-products/";
+
   if (!data || typeof listId !== "string") {
     return <p>Coś nie załadowało się poprawnie...</p>;
   }
   return (
     <div>
       <Head>
-        <title>Products via CSR</title>
+        <title>Products via SSG</title>
       </Head>
       <div className="flex flex-col min-h-screen max-w-4xl mx-auto">
         <Header />
@@ -38,7 +41,7 @@ const ListIdPage = ({
             <Pagination
               totalPages={totalPages}
               current={listId}
-              renderType="ssg"
+              elementPath={productsPath}
             />
             <ul className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
               {data.map((product) => (
@@ -120,7 +123,7 @@ export const getStaticProps = async ({
   };
 };
 
-interface ProductsApiResponse {
+export interface ProductsApiResponse {
   id: number;
   title: string;
   price: number;

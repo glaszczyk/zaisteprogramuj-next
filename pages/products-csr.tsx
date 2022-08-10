@@ -1,11 +1,13 @@
 import { useQuery, UseQueryResult } from "react-query";
-import { Pagination } from "../components/Pagination";
 import { useRouter } from "next/router";
 import Head from "next/head";
+
+import { Pagination } from "../components/Pagination";
 import { Header } from "../components/Header";
 import { Main } from "../components/Main";
 import { Footer } from "../components/Footer";
 import { ProductCsrDetails } from "../components/Product";
+import { ProductsApiResponse } from "./new-products/[listId]";
 
 const PRODUCTS_API_URL = "https://naszsklep-api.vercel.app/api/products";
 
@@ -25,6 +27,8 @@ const ProductsCSRPage = () => {
   const result = useQuery(["products", currentPage], () =>
     getProducts(currentPage)
   );
+
+  const productsPath = "/products-csr?page=";
 
   const renderProductsCSRContent = (
     result: UseQueryResult<ProductsApiResponse[]>
@@ -67,7 +71,7 @@ const ProductsCSRPage = () => {
             <Pagination
               totalPages={10}
               current={currentPage}
-              renderType="csr"
+              elementPath={productsPath}
             />
             {renderProductsCSRContent(result)}
           </div>
@@ -79,17 +83,3 @@ const ProductsCSRPage = () => {
 };
 
 export default ProductsCSRPage;
-
-export interface ProductsApiResponse {
-  id: number;
-  title: string;
-  price: number;
-  description: string;
-  category: string;
-  image: string;
-  longDescription: string;
-  rating: {
-    rate: number;
-    count: number;
-  };
-}

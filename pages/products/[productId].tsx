@@ -1,6 +1,7 @@
 import { InferGetStaticPropsType } from "next";
-import { ProductDetails } from "../../components/Product";
 import Link from "next/link";
+
+import { ProductDetails } from "../../components/Product";
 
 const ProductIdPage = ({
   data,
