@@ -28,6 +28,8 @@ const ProductsCSRPage = () => {
     getProducts(currentPage)
   );
 
+  const productsPath = "/products-csr?page=";
+
   const renderProductsCSRContent = (
     result: UseQueryResult<ProductsApiResponse[]>
   ) => {
@@ -69,7 +71,7 @@ const ProductsCSRPage = () => {
             <Pagination
               totalPages={10}
               current={currentPage}
-              renderType="csr"
+              elementPath={productsPath}
             />
             {renderProductsCSRContent(result)}
           </div>

@@ -4,12 +4,12 @@ import Link from "next/link";
 interface PageProps {
   value: number;
   selected?: boolean;
-  renderType: PageRenderType;
+  elementPath: string;
 }
 
-interface GetPagination {
+interface Pagination {
   paginationItems: PaginationItem[];
-  renderType: PageRenderType;
+  elementPath: string;
 }
 
 type PaginationItem =
@@ -22,9 +22,7 @@ type PaginationItem =
       type: "non-page";
     };
 
-const PageItem = ({ value, selected = false, renderType }: PageProps) => {
-  const pathFragment =
-    renderType === "csr" ? "/products-csr?page=" : "/new-products/";
+const PageItem = ({ value, selected = false, elementPath }: PageProps) => {
   const liClassNames = `w-14 h-14 rounded-md ${
     selected ? "bg-blue-800" : "bg-gray-200"
   } ${selected ? "text-white" : "text-black"} `;
@@ -34,7 +32,7 @@ const PageItem = ({ value, selected = false, renderType }: PageProps) => {
       {value}
     </span>
   ) : (
-    <Link href={`${pathFragment}${value}`}>
+    <Link href={`${elementPath}${value}`}>
       <a className="text-lg flex w-full h-full justify-center text-xl items-center">
         {value}
       </a>
@@ -116,15 +114,15 @@ const getPaginationItems = (
 
 const renderPaginationItems = ({
   paginationItems,
-  renderType,
-}: GetPagination) => {
+  elementPath,
+}: Pagination) => {
   return paginationItems.map((page, idx) =>
     page.type === "page" ? (
       <PageItem
         key={`page-${idx}`}
         value={page.value}
         selected={page.selected}
-        renderType={renderType}
+        elementPath={elementPath}
       />
     ) : (
       <NonPageItem key={`non-page-${idx}`} />
@@ -132,18 +130,16 @@ const renderPaginationItems = ({
   );
 };
 
-type PageRenderType = "csr" | "ssg";
-
 interface PaginationProps {
   totalPages: number;
   current: string;
-  renderType: PageRenderType;
+  elementPath: string;
 }
 
 export const Pagination = ({
   current = "1",
   totalPages,
-  renderType,
+  elementPath,
 }: PaginationProps) => {
   const allPages = useMemo(
     () => new Array(totalPages).fill(null).map((_, i) => i + 1),
@@ -155,7 +151,7 @@ export const Pagination = ({
   return (
     <nav className="py-4">
       <ul className="flex gap-3">
-        {renderPaginationItems({ paginationItems, renderType })}
+        {renderPaginationItems({ paginationItems, elementPath })}
       </ul>
     </nav>
   );
