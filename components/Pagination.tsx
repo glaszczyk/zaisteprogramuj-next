@@ -1,3 +1,4 @@
+import { useMemo } from "react";
 import Link from "next/link";
 
 interface PageProps {
@@ -7,8 +8,7 @@ interface PageProps {
 }
 
 interface GetPagination {
-  allPages: number[];
-  currentPage: number;
+  paginationItems: PaginationItem[];
   renderType: PageRenderType;
 }
 
@@ -22,7 +22,7 @@ type PaginationItem =
       type: "non-page";
     };
 
-const Page = ({ value, selected = false, renderType }: PageProps) => {
+const PageItem = ({ value, selected = false, renderType }: PageProps) => {
   const pathFragment =
     renderType === "csr" ? "/products-csr?page=" : "/new-products/";
   const liClassNames = `w-14 h-14 rounded-md ${
@@ -43,7 +43,7 @@ const Page = ({ value, selected = false, renderType }: PageProps) => {
   return <li className={liClassNames}>{pageElement}</li>;
 };
 
-const NonPage = () => {
+const NonPageItem = () => {
   return (
     <li className="w-14 h-14">
       <span className="text-lg flex w-full h-full justify-center text-xl items-center">
@@ -61,16 +61,15 @@ const getMiddleThree = <T,>(arr: T[], nonZeroCurrent: number) => [
 ];
 const getLastFive = <T,>(arr: T[]) => [...arr.slice(-5)];
 
-const setPageItem = (args: {
-  value: number;
-  current: number;
-}): PaginationItem => {
-  return {
-    type: "page",
-    value: args.value,
-    selected: args.value === args.current,
+const setPageItemWithCurrent =
+  (current: number) =>
+  (value: number): PaginationItem => {
+    return {
+      type: "page",
+      value,
+      selected: value === current,
+    };
   };
-};
 
 const setNonPageItem = (): PaginationItem => {
   return {
@@ -78,80 +77,57 @@ const setNonPageItem = (): PaginationItem => {
   };
 };
 
-const paginate = (
+const getPaginationItems = (
   allPages: number[],
   currentPage: number
 ): PaginationItem[] => {
   const displayedItems = 7;
+  const setPageItem = setPageItemWithCurrent(currentPage);
   const total = allPages.length;
   if (total === 1) {
-    return [setPageItem({ value: getFirst(allPages), current: 1 })];
+    return [setPageItem(getFirst(allPages))];
   }
   if (total <= displayedItems) {
-    return allPages.map((page) =>
-      setPageItem({ value: page, current: currentPage })
-    );
+    return allPages.map((page) => setPageItem(page));
   }
   if (currentPage <= 3) {
     const firstFive = [...getFirstFive(allPages)].map((page) =>
-      setPageItem({ value: page, current: currentPage })
+      setPageItem(page)
     );
-    return [
-      ...firstFive,
-      setNonPageItem(),
-      setPageItem({
-        value: getLast(allPages),
-        current: currentPage,
-      }),
-    ];
+    return [...firstFive, setNonPageItem(), setPageItem(getLast(allPages))];
   }
   if (total - currentPage <= 2) {
     const lastFive = [...getLastFive(allPages)].map((page) =>
-      setPageItem({ value: page, current: currentPage })
+      setPageItem(page)
     );
-    return [
-      setPageItem({
-        value: getFirst(allPages),
-        current: currentPage,
-      }),
-      setNonPageItem(),
-      ...lastFive,
-    ];
+    return [setPageItem(getFirst(allPages)), setNonPageItem(), ...lastFive];
   }
   const middleThree = [...getMiddleThree(allPages, currentPage)].map((page) =>
-    setPageItem({ value: page, current: currentPage })
+    setPageItem(page)
   );
   return [
-    setPageItem({
-      value: getFirst(allPages),
-      current: currentPage,
-    }),
+    setPageItem(getFirst(allPages)),
     setNonPageItem(),
     ...middleThree,
     setNonPageItem(),
-    setPageItem({
-      value: getLast(allPages),
-      current: currentPage,
-    }),
+    setPageItem(getLast(allPages)),
   ];
 };
 
-const getPagination = ({
-  allPages,
-  currentPage,
+const renderPaginationItems = ({
+  paginationItems,
   renderType,
 }: GetPagination) => {
-  const pagination = paginate(allPages, currentPage);
-  return pagination.map((page, idx) =>
+  return paginationItems.map((page, idx) =>
     page.type === "page" ? (
-      <Page
+      <PageItem
         key={`page-${idx}`}
         value={page.value}
         selected={page.selected}
         renderType={renderType}
       />
     ) : (
-      <NonPage key={`non-page-${idx}`} />
+      <NonPageItem key={`non-page-${idx}`} />
     )
   );
 };
@@ -169,12 +145,17 @@ export const Pagination = ({
   totalPages,
   renderType,
 }: PaginationProps) => {
-  const allPages = new Array(totalPages).fill(null).map((_, i) => i + 1);
+  const allPages = useMemo(
+    () => new Array(totalPages).fill(null).map((_, i) => i + 1),
+    [totalPages]
+  );
   const currentPage = parseInt(current);
+  const paginationItems = getPaginationItems(allPages, currentPage);
+
   return (
     <nav className="py-4">
       <ul className="flex gap-3">
-        {getPagination({ allPages, currentPage, renderType })}
+        {renderPaginationItems({ paginationItems, renderType })}
       </ul>
     </nav>
   );
