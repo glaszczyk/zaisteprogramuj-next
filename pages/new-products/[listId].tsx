@@ -32,7 +32,7 @@ const ListIdPage = ({
   return (
     <div>
       <Head>
-        <title>Products via CSR</title>
+        <title>Products via SSG</title>
       </Head>
       <div className="flex flex-col min-h-screen max-w-4xl mx-auto">
         <Header />
