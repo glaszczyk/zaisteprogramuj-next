@@ -1,6 +1,7 @@
 import { InferGetStaticPropsType } from "next";
 import Head from "next/head";
 import { useRouter } from "next/router";
+
 import { Pagination } from "../../components/Pagination";
 import { ProductListItem } from "../../components/Product";
 import { Header } from "../../components/Header";
@@ -120,7 +121,7 @@ export const getStaticProps = async ({
   };
 };
 
-interface ProductsApiResponse {
+export interface ProductsApiResponse {
   id: number;
   title: string;
   price: number;

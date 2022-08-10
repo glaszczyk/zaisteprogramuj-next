@@ -1,10 +1,12 @@
 import { InferGetStaticPropsType } from "next";
 import Head from "next/head";
+import { useRouter } from "next/router";
+
 import { Header } from "../../../components/Header";
 import { Main } from "../../../components/Main";
 import { Footer } from "../../../components/Footer";
 import { ProductDetails } from "../../../components/Product";
-import { useRouter } from "next/router";
+import { ProductsApiResponse } from "../[listId]";
 
 const getProductDetails = (data: ProductsApiResponse) => {
   const { id, title, longDescription, rating, image } = data;
@@ -106,17 +108,3 @@ export type InferGetStaticPaths<T> = T extends () => Promise<{
 }>
   ? { params?: R }
   : never;
-
-interface ProductsApiResponse {
-  id: number;
-  title: string;
-  price: number;
-  description: string;
-  category: string;
-  image: string;
-  longDescription: string;
-  rating: {
-    rate: number;
-    count: number;
-  };
-}

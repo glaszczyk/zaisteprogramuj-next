@@ -1,4 +1,5 @@
 import { InferGetStaticPropsType } from "next";
+
 import { ProductListItem } from "../components/Product";
 
 const ProductsPage = ({

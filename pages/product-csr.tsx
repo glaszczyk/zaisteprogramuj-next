@@ -1,11 +1,12 @@
 import { useQuery, UseQueryResult } from "react-query";
 import { useRouter } from "next/router";
 import Head from "next/head";
+
 import { Header } from "../components/Header";
 import { Main } from "../components/Main";
 import { Footer } from "../components/Footer";
 import { ProductDetails } from "../components/Product";
-import { ProductsApiResponse } from "./products-csr";
+import { ProductsApiResponse } from "./new-products/[listId]";
 
 const getProduct = async (product: string) => {
   const response = await fetch(

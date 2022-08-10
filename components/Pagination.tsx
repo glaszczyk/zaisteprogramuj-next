@@ -12,7 +12,7 @@ interface GetPagination {
   renderType: PageRenderType;
 }
 
-type PageItem =
+type PaginationItem =
   | {
       type: "page";
       value: number;
@@ -61,7 +61,10 @@ const getMiddleThree = <T,>(arr: T[], nonZeroCurrent: number) => [
 ];
 const getLastFive = <T,>(arr: T[]) => [...arr.slice(-5)];
 
-const setPageItem = (args: { value: number; current: number }): PageItem => {
+const setPageItem = (args: {
+  value: number;
+  current: number;
+}): PaginationItem => {
   return {
     type: "page",
     value: args.value,
@@ -69,13 +72,16 @@ const setPageItem = (args: { value: number; current: number }): PageItem => {
   };
 };
 
-const setNonPageItem = (): PageItem => {
+const setNonPageItem = (): PaginationItem => {
   return {
     type: "non-page",
   };
 };
 
-const paginate = (allPages: number[], currentPage: number): PageItem[] => {
+const paginate = (
+  allPages: number[],
+  currentPage: number
+): PaginationItem[] => {
   const displayedItems = 7;
   const total = allPages.length;
   if (total === 1) {
