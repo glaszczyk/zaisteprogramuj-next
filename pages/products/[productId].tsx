@@ -1,30 +1,42 @@
 import { InferGetStaticPropsType } from "next";
 import Link from "next/link";
+import { Main } from "../../components/Main";
 
 import { ProductDetails } from "../../components/Product";
+import Head from "next/head";
 
 const ProductIdPage = ({
   data,
 }: InferGetStaticPropsType<typeof getStaticProps>) => {
-  if (!data) {
-    return <div>Chyba mamy problem...</div>;
-  }
+  const renderProducts = () => {
+    if (!data) {
+      return <div>Chyba mamy problem...</div>;
+    }
+    return (
+      <>
+        <Link href="/products">
+          <a className="font-bold">Wróć do listy produktów</a>
+        </Link>
+        <ProductDetails
+          data={{
+            id: data.id,
+            description: data.description,
+            thumbnailAlt: data.title,
+            thumbnailUrl: data.image,
+            rating: data.rating.rate,
+            title: data.title,
+          }}
+        />
+      </>
+    );
+  };
   return (
-    <div>
-      <Link href="/products">
-        <a className="font-bold">Wróć do listy produktów</a>
-      </Link>
-      <ProductDetails
-        data={{
-          id: data.id,
-          description: data.description,
-          thumbnailAlt: data.title,
-          thumbnailUrl: data.image,
-          rating: data.rating.rate,
-          title: data.title,
-        }}
-      />
-    </div>
+    <Main>
+      <Head>
+        <title>FakeStoreApi Product Details</title>
+      </Head>
+      {renderProducts()}
+    </Main>
   );
 };
 export default ProductIdPage;

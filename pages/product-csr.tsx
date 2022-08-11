@@ -2,9 +2,7 @@ import { useQuery, UseQueryResult } from "react-query";
 import { useRouter } from "next/router";
 import Head from "next/head";
 
-import { Header } from "../components/Header";
 import { Main } from "../components/Main";
-import { Footer } from "../components/Footer";
 import { ProductDetails } from "../components/Product";
 import { ProductsApiResponse } from "./new-products/[listId]";
 
@@ -47,24 +45,18 @@ const ProductCSRPage = () => {
   };
 
   return (
-    <div>
+    <Main>
       <Head>
         <title>Product details</title>
       </Head>
-      <div className="flex flex-col min-h-screen max-w-4xl mx-auto">
-        <Header />
-        <Main>
-          <button
-            onClick={() => router.back()}
-            className="w-100 h-14 px-4 bg-blue-800 text-white rounded-md"
-          >
-            Wróć do listy produktów
-          </button>
-          <div className="flex flex-col py-6">{renderProductCSR(result)}</div>
-        </Main>
-        <Footer />
-      </div>
-    </div>
+      <button
+        onClick={() => router.back()}
+        className="w-100 h-14 px-4 bg-blue-800 text-white rounded-md"
+      >
+        Wróć do listy produktów
+      </button>
+      <div className="flex flex-col py-6">{renderProductCSR(result)}</div>
+    </Main>
   );
 };
 

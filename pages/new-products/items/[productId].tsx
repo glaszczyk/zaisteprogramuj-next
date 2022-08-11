@@ -2,9 +2,7 @@ import { InferGetStaticPropsType } from "next";
 import Head from "next/head";
 import { useRouter } from "next/router";
 
-import { Header } from "../../../components/Header";
 import { Main } from "../../../components/Main";
-import { Footer } from "../../../components/Footer";
 import { ProductDetails } from "../../../components/Product";
 import { ProductsApiResponse } from "../[listId]";
 
@@ -24,30 +22,33 @@ const ProductIdPage = ({
   data,
 }: InferGetStaticPropsType<typeof getStaticProps>) => {
   const router = useRouter();
-  if (!data) {
-    return <div>Coś jest nie tak. Przepraszam</div>;
+
+  function renderContent() {
+    if (!data) {
+      return <p>Coś jest nie tak. Przepraszam</p>;
+    }
+    return (
+      <>
+        <button
+          onClick={() => router.back()}
+          className="w-100 h-14 px-4 bg-blue-800 text-white rounded-md"
+        >
+          Wróć do listy produktów
+        </button>
+        <div className="flex flex-col py-6">
+          <ProductDetails data={getProductDetails(data)} />
+        </div>
+      </>
+    );
   }
+
   return (
-    <div>
+    <Main>
       <Head>
-        <title>Product details</title>
+        <title>SSG product details</title>
       </Head>
-      <div className="flex flex-col min-h-screen max-w-4xl mx-auto">
-        <Header />
-        <Main>
-          <button
-            onClick={() => router.back()}
-            className="w-100 h-14 px-4 bg-blue-800 text-white rounded-md"
-          >
-            Wróć do listy produktów
-          </button>
-          <div className="flex flex-col py-6">
-            <ProductDetails data={getProductDetails(data)} />
-          </div>
-        </Main>
-        <Footer />
-      </div>
-    </div>
+      {renderContent()}
+    </Main>
   );
 };
 

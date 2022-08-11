@@ -3,9 +3,7 @@ import { useRouter } from "next/router";
 import Head from "next/head";
 
 import { Pagination } from "../components/Pagination";
-import { Header } from "../components/Header";
 import { Main } from "../components/Main";
-import { Footer } from "../components/Footer";
 import { ProductCsrDetails } from "../components/Product";
 import { ProductsApiResponse } from "./new-products/[listId]";
 
@@ -60,25 +58,19 @@ const ProductsCSRPage = () => {
   };
 
   return (
-    <div>
+    <Main>
       <Head>
         <title>Products via CSR</title>
       </Head>
-      <div className="flex flex-col min-h-screen max-w-4xl mx-auto">
-        <Header />
-        <Main>
-          <div className="flex flex-col">
-            <Pagination
-              totalPages={10}
-              current={currentPage}
-              elementPath={productsPath}
-            />
-            {renderProductsCSRContent(result)}
-          </div>
-        </Main>
-        <Footer />
+      <div className="flex flex-col">
+        <Pagination
+          totalPages={10}
+          current={currentPage}
+          elementPath={productsPath}
+        />
+        {renderProductsCSRContent(result)}
       </div>
-    </div>
+    </Main>
   );
 };
 

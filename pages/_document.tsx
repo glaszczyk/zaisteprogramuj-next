@@ -4,7 +4,7 @@ class MyDocument extends Document {
   render() {
     return (
       <Html lang="pl">
-        <Head></Head>
+        <Head />
         <body className="bg-gray-100 antialiased">
           <Main />
           <NextScript />
